@@ -4,6 +4,8 @@ import AddTask from "./AddTask";
 import TaskList from "./TaskList";
 
 class App extends Component {
+  //counter powinien się zaczynać od 0, ale jako że mam inne elementy do 8 to wiadomo
+  counter = 9;
   state = {
     tasks: [
       {
@@ -123,10 +125,30 @@ class App extends Component {
       tasks,
     });
   };
+
+  //metoda dodawania tasków
+  addTask = (text, date, important) => {
+    const task = {
+      id: this.counter, //kolejny id z countera
+      text, //tekst z inputa
+      date, //data z inputa
+      important, //check z inputa
+      active: true,
+      finishDate: null,
+    };
+    this.counter++;
+    console.log(task, this.counter);
+    this.setState((prevState) => ({
+      //dodanie taska do state poprzez utworzenie nowej tablicy tasks, złożonej z prevState powiększonego o pojedynczy nowy task
+      tasks: [...prevState.tasks, task],
+    }));
+    return true;
+  };
   render() {
     return (
       <div className='App'>
-        todo <AddTask />{" "}
+        <h1>ToDoApp</h1>
+        <AddTask add={this.addTask} />{" "}
         <TaskList
           tasks={this.state.tasks}
           delete={this.deleteTask}
