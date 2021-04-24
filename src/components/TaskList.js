@@ -5,6 +5,23 @@ const TaskList = (props) => {
   //filtrowanie tasków względem tego czy są aktywne
   const active = props.tasks.filter((task) => task.active === true);
   const done = props.tasks.filter((task) => task.active === false);
+
+  //ustawianie sortowania tablicy aktywnych alfabetycznie
+  if (active.length >= 2) {
+    active.sort((a, b) => {
+      a = a.text.toLowerCase();
+      b = b.text.toLowerCase();
+      if (a < b) return -1;
+      if (a > b) return 1;
+      return 0;
+    });
+  }
+
+  //ustawianie sortowania tablicy wykonanych po datach wykonania
+  if (done.length >= 2) {
+    done.sort((a, b) => b.finishDate - a.finishDate);
+  }
+
   //mapowanie tasków aktywnych i wykonanych
   const activeTasks = active.map((task) => (
     <Task
@@ -31,7 +48,7 @@ const TaskList = (props) => {
       </div>
 
       <hr />
-
+      {/* wykonane */}
       <div className='done'>
         <h2>
           Zadania wykonane <em>({done.length})</em>
