@@ -19,7 +19,7 @@ class App extends Component {
         text: "coś ugotować",
         date: "2021-11-12",
         important: false,
-        active: true,
+        active: false,
         finishDate: null,
       },
       {
@@ -83,10 +83,45 @@ class App extends Component {
 
   deleteTask = (id) => {
     console.log("delete o id: " + id);
+
+    //pierwsza opcja - findIndex
+
+    // //kopia tablicy
+    // const tasks = [...this.state.tasks];
+    // //znalezienie odpowiedniego indexu odpowiadającemu id klikniętego elementu
+    // const index = tasks.findIndex((task) => task.id === id);
+    // //usunięcie konkretnego elementu z tablicy
+    // tasks.splice(index, 1);
+    // //wbicie nowej tablicy w state
+    // this.setState({
+    //   tasks,
+    // });
+
+    //druga opcja - filter
+
+    let tasks = [...this.state.tasks];
+    //tworzę tablicę tasks ze wszystkimi elementami, które nie pasują przez id do elementu klikniętego
+    tasks = tasks.filter((task) => task.id !== id);
+    this.setState({
+      tasks,
+    });
   };
 
   changeTaskStatus = (id) => {
     console.log("done o id: " + id);
+    //kopia tablicy
+    const tasks = Array.from(this.state.tasks);
+    //iteracja po tablicy
+    tasks.forEach((task) => {
+      //zmiana właściwości active pojedynczego taska z nowej tablicy
+      if (task.id === id) {
+        task.active = false;
+        task.finishDate = new Date().getTime();
+      }
+    });
+    this.setState({
+      tasks,
+    });
   };
   render() {
     return (
